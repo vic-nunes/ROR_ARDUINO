@@ -4,26 +4,26 @@
  * 
  * LICENSE:
  *    MIT License
- *    
+ *
  *   Copyright (c) 2025 Vitor Nunes
- *   
+ *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
  *   in the Software without restriction, including without limitation the rights
  *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *   copies of the Software, and to permit persons to whom the Software is
  *   furnished to do so, subject to the following conditions:
- *   
+ *
  *   The above copyright notice and this permission notice shall be included in all
  *   copies or substantial portions of the Software.
- *   
+ *
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *   SOFTWARE. 
+ *   SOFTWARE.
  * 
  * DISCLAIMER:
  * This software is provided "as is" without any warranty of any kind, express or implied.
@@ -280,10 +280,10 @@ processSerialCommand (String cmd)
 
         if (currentSafety == SAF_UNSAFE)
         {
-            // If the roof was opening, report it as SENSOR_CLOSED to force a close command.
+            // If the roof was opening, report it as closed to force a close command.
             if (directionBeforeUnsafe == DIR_OPENING)
             {
-                str = "SENSOR_CLOSED,unsafe,not_moving_c#";
+                str = "closed,unsafe,not_moving_c#";
             }
             // If the roof was closing, report it as opened to force an open command.
             else if (directionBeforeUnsafe == DIR_CLOSING)
@@ -292,8 +292,8 @@ processSerialCommand (String cmd)
             }
             else
             {
-                // by default if we have unknow position, we state that it's SENSOR_CLOSED
-                str = "SENSOR_CLOSED,unsafe,not_moving_c#";
+                // by default if we have unknow position, we state that it's closed
+                str = "closed,unsafe,not_moving_c#";
             }
             // Send the manipulated state and reset the flag.
             Serial.println (str.c_str ());
@@ -305,10 +305,10 @@ processSerialCommand (String cmd)
         // --- Logic for state recovery after an unsafe event ---
         if (currentSafety == SAF_SAFE && previousSafety == SAF_UNSAFE)
         {
-            // If the roof was opening, report it as SENSOR_CLOSED to force a close command.
+            // If the roof was opening, report it as closed to force a close command.
             if (directionBeforeUnsafe == DIR_OPENING)
             {
-                str = "SENSOR_CLOSED,safe,not_moving_c#";
+                str = "closed,safe,not_moving_c#";
                 // Send the manipulated state and reset the flag.
                 Serial.println (str.c_str ());
                 //   directionBeforeUnsafe = DIR_NONE; // Reset after sending the state once.
@@ -328,10 +328,10 @@ processSerialCommand (String cmd)
 
         // --- Normal 'get' Processing ---
         str = "";
-        // PART 1: Position state (opened, SENSOR_CLOSED, opening, closing, unknown)
+        // PART 1: Position state (opened, closed, opening, closing, unknown)
         if (openedState)
         {
-            str += "SENSOR_OPENED,";
+            str += "opened,";
         }
         else if (closedState)
         {
@@ -356,11 +356,11 @@ processSerialCommand (String cmd)
             {
                 if (lastPosition == POS_OPENED)
                 {
-                    str += "SENSOR_OPENED,";
+                    str += "opened,";
                 }
                 else if (lastPosition == POS_CLOSED)
                 {
-                    str += "SENSOR_CLOSED,";
+                    str += "closed,";
                 }
             }
         }
@@ -368,7 +368,7 @@ processSerialCommand (String cmd)
         // PART 2: Safety state
         if (safeState)
         {
-            str += "SAFETY_SENSOR,";
+            str += "safe,";
         }
         else
         {
@@ -412,11 +412,11 @@ processSerialCommand (String cmd)
         {
             if (safeState)
             {
-                str = "SENSOR_CLOSED,SAFETY_SENSOR,not_moving_c#";
+                str = "closed,safe,not_moving_c#";
             }
             else
             {
-                str = "SENSOR_CLOSED,unsafe,not_moving_c#";
+                str = "closed,unsafe,not_moving_c#";
             }
         }
         Serial.println (str.c_str ());
@@ -654,4 +654,3 @@ loop ()
         command_buffer = "";
     }
 }
-
