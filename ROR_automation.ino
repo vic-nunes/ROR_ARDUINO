@@ -43,7 +43,7 @@
  * full responsibility for its use in your application.
  *
  *
- *  To be used ONLY in conjunction with VINU ROR ASCOM driver available in: https://github.com/vic-nunes/ROR
+ *  To be used ONLY in conjunction with VINU ROR ASCOM driver available in: https://github.com/vic-nunes/ROR_ASCOM
  */
 
 //
@@ -654,3 +654,4 @@ loop ()
         command_buffer = "";
     }
 }
+
